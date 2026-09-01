@@ -1145,6 +1145,12 @@ img {
 
 /* ---------- Responsive ---------- */
 @media (max-width: 720px) {
+  .hero-title {
+    font-size: 2.5rem;
+    line-height: 1.08;
+    max-width: 100%;
+  }
+
   .testimonial-grid {
     grid-template-columns: 1fr;
   }
