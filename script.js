@@ -1,4 +1,21 @@
 // ---------- Countdown timer ----------
+const k = "offerEnd";
+const d = 72 * 60 * 60 * 1000;
+
+let e = sessionStorage.getItem(k) || Date.now() + d;
+
+sessionStorage.setItem(k, e);
+
+setInterval(() => {
+  let r = Math.max(0, e - Date.now()),
+    h = Math.floor(r / 36e5),
+    m = Math.floor((r % 36e5) / 6e4),
+    s = Math.floor((r % 6e4) / 1e3);
+
+  document.getElementById("timer").textContent =
+    `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+}, 1000);
+
 (function countdown() {
   const el = document.getElementById("countdown");
   if (!el) return;
@@ -61,7 +78,6 @@
 // ---------- CTA buttons ----------
 document.querySelectorAll("[data-cta]").forEach((btn) => {
   btn.addEventListener("click", () => {
-    // Hook this up to your checkout / payment link
-    console.log("CTA clicked — wire this button up to your checkout link.");
+    window.location.href = "checkout.html";
   });
 });

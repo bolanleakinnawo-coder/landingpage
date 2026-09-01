@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Media Buying Academy — Complete Your Payment</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Paystack inline checkout SDK -->
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+    <style>
+      :root {
+        --green: #1e8a5a;
+        --green-dark: #146b45;
+        --green-light: #eaf7f0;
+        --amber: #ffc233;
+        --amber-dark: #e6a800;
+        --bg: #f6fbf8;
+        --card: #ffffff;
+        --ink: #12251c;
+        --ink-dim: #5c6f65;
+        --line: #dceee3;
+        --red: #c4402c;
+        --radius-m: 14px;
+        --radius-s: 8px;
+        --font-display: "Sora", sans-serif;
+        --font-body: "Inter", -apple-system, sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font-family: var(--font-body);
+        line-height: 1.5;
+        padding: 32px 16px 60px;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .card {
+        max-width: 440px;
+        margin: 0 auto;
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-m);
+        overflow: hidden;
+        box-shadow: 0 20px 50px rgba(18, 37, 28, 0.06);
+      }
+
+      .header {
+        text-align: center;
+        padding: 26px 24px 22px;
+        border-bottom: 1px solid var(--line);
+      }
+      h1 {
+        font-family: var(--font-display);
+        font-weight: 800;
+        font-size: 1.3rem;
+      }
+      h1 .accent {
+        color: var(--green);
+      }
+      .header .sub {
+        color: var(--ink-dim);
+        font-size: 0.88rem;
+        margin-top: 6px;
+      }
+      .header .amount {
+        font-family: var(--font-display);
+        font-weight: 800;
+        font-size: 2rem;
+        margin-top: 14px;
+      }
+
+      /* ---------- tabs ---------- */
+      .tabs {
+        display: flex;
+      }
+      .tab-btn {
+        flex: 1;
+        background: none;
+        border: none;
+        padding: 16px 8px;
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: 0.92rem;
+        color: var(--ink-dim);
+        cursor: pointer;
+        border-bottom: 3px solid var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition:
+          color 0.15s ease,
+          border-color 0.15s ease;
+      }
+      .tab-btn.active {
+        color: var(--ink);
+        border-bottom-color: var(--green);
+      }
+
+      .tab-panel {
+        display: none;
+        padding: 24px;
+      }
+      .tab-panel.active {
+        display: block;
+      }
+
+      /* ---------- transfer panel ---------- */
+      .bank-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: var(--green-light);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin: 0 auto 14px;
+      }
+      .transfer-title {
+        text-align: center;
+        font-family: var(--font-display);
+        font-weight: 700;
+        color: var(--green);
+        font-size: 1.05rem;
+        margin-bottom: 8px;
+      }
+      .transfer-note {
+        text-align: center;
+        font-size: 0.86rem;
+        color: var(--ink-dim);
+        margin-bottom: 18px;
+        line-height: 1.5;
+      }
+      .warning-box {
+        border: 1px dashed var(--amber-dark);
+        background: #fff8e6;
+        border-radius: var(--radius-s);
+        padding: 12px 14px;
+        font-size: 0.82rem;
+        color: #8a6400;
+        text-align: center;
+        margin-bottom: 18px;
+      }
+
+      .paystack-note {
+        border: 1px solid var(--line);
+        border-radius: var(--radius-s);
+        padding: 16px 14px;
+        background: var(--green-light);
+        margin-bottom: 14px;
+        text-align: center;
+        color: var(--ink-dim);
+        font-size: 0.9rem;
+        line-height: 1.6;
+      }
+
+      .detail-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-s);
+        padding: 12px 14px;
+        margin-bottom: 10px;
+        background: var(--green-light);
+      }
+      .detail-row .label {
+        font-size: 0.78rem;
+        color: var(--ink-dim);
+      }
+      .detail-row .value {
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: 0.98rem;
+        color: var(--ink);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .detail-row .value.mono {
+        font-family: "Courier New", monospace;
+        letter-spacing: 0.03em;
+      }
+      .copy-btn {
+        background: #fff;
+        border: 1px solid var(--line);
+        color: var(--green-dark);
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.03em;
+        padding: 4px 8px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.15s ease;
+      }
+      .copy-btn:hover {
+        background: var(--green-light);
+      }
+      .copy-btn.copied {
+        background: var(--green);
+        color: #fff;
+        border-color: var(--green);
+      }
+
+      .expiry-note {
+        text-align: center;
+        font-size: 0.85rem;
+        color: var(--ink-dim);
+        margin: 18px 0 16px;
+      }
+      .expiry-note #countdown {
+        color: var(--red);
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* ---------- card panel ---------- */
+      .card-panel-inner {
+        text-align: center;
+        padding: 12px 0 4px;
+      }
+      .card-panel-inner .icon {
+        font-size: 2rem;
+        margin-bottom: 10px;
+      }
+      .card-panel-inner p {
+        color: var(--ink-dim);
+        font-size: 0.9rem;
+        margin-bottom: 20px;
+      }
+
+      /* ---------- shared button ---------- */
+      .btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        background: var(--amber);
+        color: #2a2000;
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: 1.02rem;
+        padding: 16px 20px;
+        border-radius: var(--radius-s);
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+        box-shadow: 0 10px 24px rgba(255, 194, 51, 0.35);
+        transition:
+          transform 0.1s ease,
+          box-shadow 0.15s ease,
+          opacity 0.15s ease;
+      }
+      .btn:hover {
+        box-shadow: 0 12px 28px rgba(255, 194, 51, 0.45);
+      }
+      .btn:active {
+        transform: scale(0.98);
+      }
+      .btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      .footer-note {
+        text-align: center;
+        padding: 18px 24px 24px;
+        border-top: 1px solid var(--line);
+      }
+      .guarantee {
+        font-size: 0.85rem;
+        color: var(--ink-dim);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        margin-bottom: 6px;
+      }
+      .security-line {
+        font-size: 0.75rem;
+        color: #8aa398;
+      }
+
+      @media (max-width: 420px) {
+        .header {
+          padding: 22px 18px 18px;
+        }
+        h1 {
+          font-size: 1.1rem;
+        }
+        .header .amount {
+          font-size: 1.7rem;
+        }
+        .tab-panel {
+          padding: 20px 18px;
+        }
+      }
+
+      @media (min-width: 600px) {
+        body {
+          padding: 56px 16px;
+        }
+      }
+
+      :focus-visible {
+        outline: 2px solid var(--green);
+        outline-offset: 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="header">
+        <h1>The Media Buying <span class="accent">Academy</span></h1>
+        <p class="sub">Complete your payment below</p>
+        <div class="amount">₦35,000</div>
+      </div>
+
+      <div class="tabs">
+        <button
+          class="tab-btn active"
+          id="tab-transfer-btn"
+          onclick="switchTab('transfer')"
+        >
+          🏦 Pay via Transfer
+        </button>
+        <button class="tab-btn" id="tab-card-btn" onclick="switchTab('card')">
+          💳 Pay with Card
+        </button>
+      </div>
+
+      <!-- TRANSFER PANEL -->
+      <div class="tab-panel active" id="panel-transfer">
+        <div class="bank-icon">🏦</div>
+        <div class="transfer-title">Direct Bank Transfer</div>
+        <p class="transfer-note">
+          Transfer the exact amount below from your banking app, then come back
+          and tap "I have paid".
+        </p>
+
+        <div class="warning-box">
+          Please transfer the exact amount below, else it will be rejected.
+        </div>
+
+        <div class="detail-row">
+          <span class="label">Bank Name:</span>
+          <span class="value" id="bankName">Paystack-Titan</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Account Name:</span>
+          <span class="value" id="acctName">PAYSTACK CHECKOUT</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Account Number:</span>
+          <span class="value mono" id="acctNumber" data-copy-text="">
+            <span id="acctNumberValue">9987251468</span>
+            <button class="copy-btn" onclick="copyValue('acctNumber', this)">
+              COPY
+            </button>
+          </span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Amount:</span>
+          <span class="value" id="amountValue" data-copy-text="">
+            <span id="amountValueText">₦35,000</span>
+            <button class="copy-btn" onclick="copyValue('amountValue', this)">
+              COPY
+            </button>
+          </span>
+        </div>
+
+        <p class="expiry-note">
+          This account expires in <span id="countdown">27:52</span>
+        </p>
+
+        <button class="btn" id="confirmTransferBtn" onclick="confirmTransfer()">
+          I have paid →
+        </button>
+      </div>
+
+      <!-- CARD PANEL -->
+      <div class="tab-panel" id="panel-card">
+        <div class="card-panel-inner">
+          <div class="icon">💳</div>
+          <p>
+            You'll be redirected to a secure Paystack window to complete your
+            card payment.
+          </p>
+        </div>
+        <button class="btn" id="payWithCardBtn" onclick="payWithPaystack()">
+          Pay ₦35,000 with Card →
+        </button>
+      </div>
+
+      <div class="footer-note">
+        <p class="guarantee">🛡️ 7-day money-back guarantee</p>
+        <p class="security-line">
+          🔒 Secure payment via Paystack · instant access after payment
+        </p>
+      </div>
+    </div>
+
+    <script>
+      /* =========================================================
+     CONFIG — fill these in before going live
+     ========================================================= */
+      var PAYSTACK_PUBLIC_KEY =
+        "pk_live_8baff3a09f4b25119f874b5dca68aae72a11cfbc"; // replace with your real public key from Paystack
+      var AMOUNT_NAIRA = 35000;
+      var CUSTOMER_EMAIL =
+        new URLSearchParams(window.location.search).get("email") ||
+        "customer@example.com";
+      var CUSTOMER_NAME =
+        new URLSearchParams(window.location.search).get("name") || "Customer";
+      var CUSTOMER_PHONE =
+        new URLSearchParams(window.location.search).get("phone") || "";
+
+      /* =========================================================
+     Tab switching
+     ========================================================= */
+      function switchTab(tab) {
+        var transferBtn = document.getElementById("tab-transfer-btn");
+        var cardBtn = document.getElementById("tab-card-btn");
+        var transferPanel = document.getElementById("panel-transfer");
+        var cardPanel = document.getElementById("panel-card");
+
+        if (tab === "transfer") {
+          transferBtn.classList.add("active");
+          cardBtn.classList.remove("active");
+          transferPanel.classList.add("active");
+          cardPanel.classList.remove("active");
+        } else {
+          cardBtn.classList.add("active");
+          transferBtn.classList.remove("active");
+          cardPanel.classList.add("active");
+          transferPanel.classList.remove("active");
+        }
+      }
+
+      /* =========================================================
+     Copy-to-clipboard for account number / amount
+     ========================================================= */
+      function copyValue(elId, btn) {
+        var el = document.getElementById(elId);
+        var text =
+          (el && el.dataset.copyText) ||
+          (el ? el.textContent.replace(/COPY/g, "").trim() : "");
+
+        if (!text) {
+          var inner = document.getElementById(
+            elId === "acctNumber" ? "acctNumberValue" : "amountValueText",
+          );
+          text = inner ? inner.textContent.trim() : "";
+        }
+
+        navigator.clipboard
+          .writeText(text)
+          .then(function () {
+            var original = btn.textContent;
+            btn.textContent = "COPIED";
+            btn.classList.add("copied");
+            setTimeout(function () {
+              btn.textContent = original;
+              btn.classList.remove("copied");
+            }, 1500);
+          })
+          .catch(function () {
+            var range = document.createRange();
+            range.selectNode(el);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            document.execCommand("copy");
+            window.getSelection().removeAllRanges();
+          });
+      }
+
+      function deriveVirtualAccountNumber(name) {
+        var safeName = (name || "PAYSTACK CHECKOUT")
+          .replace(/\s+/g, "")
+          .toUpperCase();
+        var total = 0;
+        for (var i = 0; i < safeName.length; i++) {
+          total += safeName.charCodeAt(i);
+        }
+        var value = 900000000 + (total % 9000000);
+        return String(value).slice(0, 10);
+      }
+
+      function formatCurrency(value) {
+        return "₦" + Number(value).toLocaleString("en-NG");
+      }
+
+      function populateTransferDetails() {
+        var params = new URLSearchParams(window.location.search);
+        var customerName = (params.get("name") || "PAYSTACK CHECKOUT").trim();
+        var accountName = customerName
+          ? customerName.toUpperCase()
+          : "PAYSTACK CHECKOUT";
+        var accountNumber = deriveVirtualAccountNumber(customerName);
+
+        document.getElementById("bankName").textContent = "Paystack-Titan";
+        document.getElementById("acctName").textContent = accountName;
+        document.getElementById("acctNumberValue").textContent = accountNumber;
+        document.getElementById("amountValueText").textContent =
+          formatCurrency(AMOUNT_NAIRA);
+        document.getElementById("acctNumber").dataset.copyText = accountNumber;
+        document.getElementById("amountValue").dataset.copyText =
+          formatCurrency(AMOUNT_NAIRA);
+      }
+
+      /* =========================================================
+     Countdown — account/session expiry
+     ========================================================= */
+      (function () {
+        var duration = 27 * 60 + 52; // 27:52
+        var el = document.getElementById("countdown");
+        function tick() {
+          if (duration <= 0) {
+            el.textContent = "0:00";
+            return;
+          }
+          var m = Math.floor(duration / 60);
+          var s = duration % 60;
+          el.textContent = m + ":" + (s < 10 ? "0" : "") + s;
+          duration--;
+        }
+        tick();
+        setInterval(tick, 1000);
+      })();
+
+      populateTransferDetails();
+
+      /* =========================================================
+     "I have paid" — bank transfer confirmation
+     Wire this up to your backend to verify the transfer
+     (e.g. via Paystack Dedicated Virtual Account webhooks,
+     or your own reconciliation flow) before granting access.
+     ========================================================= */
+      function confirmTransfer() {
+        var btn = document.getElementById("confirmTransferBtn");
+        btn.disabled = true;
+        btn.textContent = "Processing...";
+
+        setTimeout(function () {
+          window.location.href = "thankyou.html";
+        }, 400);
+      }
+
+      /* =========================================================
+     Pay with Card — Paystack Inline popup
+     ========================================================= */
+      function payWithPaystack() {
+        if (!window.PaystackPop) {
+          alert(
+            "Paystack script did not load. Check your internet connection.",
+          );
+          return;
+        }
+        if (PAYSTACK_PUBLIC_KEY.indexOf("XXXX") !== -1) {
+          alert(
+            "Add your real Paystack public key in the PAYSTACK_PUBLIC_KEY variable before accepting live payments.",
+          );
+          return;
+        }
+
+        var handler = PaystackPop.setup({
+          key: PAYSTACK_PUBLIC_KEY,
+          email: CUSTOMER_EMAIL,
+          amount: nairaToKobo(AMOUNT_NAIRA),
+          currency: "NGN",
+          ref: "MBA-" + Math.floor(Math.random() * 1000000000),
+          metadata: {
+            custom_fields: [
+              {
+                display_name: "Full Name",
+                variable_name: "full_name",
+                value: CUSTOMER_NAME,
+              },
+              {
+                display_name: "WhatsApp Number",
+                variable_name: "phone",
+                value: CUSTOMER_PHONE,
+              },
+            ],
+          },
+          callback: function (response) {
+            window.location.href = "thankyou.html?ref=" + response.reference;
+          },
+          onClose: function () {
+            // user closed the popup without paying
+          },
+        });
+        handler.openIframe();
+      }
+
+      function nairaToKobo(naira) {
+        return naira * 100; // Paystack expects the amount in kobo
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment Successful — The Media Buying Academy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --green: #1e8a5a;
+        --green-dark: #146b45;
+        --green-light: #eaf7f0;
+        --amber: #ffc233;
+        --bg: #f6fbf8;
+        --card: #ffffff;
+        --ink: #12251c;
+        --ink-dim: #5c6f65;
+        --line: #dceee3;
+        --radius-m: 14px;
+        --radius-s: 8px;
+        --font-display: "Sora", sans-serif;
+        --font-body: "Inter", -apple-system, sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(180deg, #f3faf5 0%, #ecf8f1 100%);
+        color: var(--ink);
+        font-family: var(--font-body);
+        padding: 32px 16px;
+      }
+
+      .card {
+        width: min(100%, 520px);
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-m);
+        box-shadow: 0 18px 45px rgba(18, 37, 28, 0.08);
+        padding: 28px 24px 24px;
+        text-align: center;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 72px;
+        height: 72px;
+        margin-bottom: 18px;
+        border-radius: 50%;
+        background: var(--green-light);
+        font-size: 2rem;
+      }
+
+      h1 {
+        font-family: var(--font-display);
+        font-weight: 800;
+        font-size: clamp(1.8rem, 4vw, 2.6rem);
+        margin: 0 0 12px;
+      }
+
+      .subtitle {
+        color: var(--ink-dim);
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: 22px;
+      }
+
+      .reference {
+        background: var(--green-light);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-s);
+        padding: 12px 14px;
+        font-size: 0.85rem;
+        color: var(--ink);
+        margin-bottom: 22px;
+      }
+
+      .reference strong {
+        font-family: var(--font-display);
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px 22px;
+        background: var(--amber);
+        color: #2a2000;
+        border: none;
+        border-radius: var(--radius-s);
+        text-decoration: none;
+        font-family: var(--font-display);
+        font-weight: 700;
+        box-shadow: 0 10px 24px rgba(255, 194, 51, 0.35);
+      }
+
+      .small-note {
+        margin-top: 18px;
+        font-size: 0.8rem;
+        color: var(--ink-dim);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="badge">✅</div>
+      <h1>Payment Successful</h1>
+      <p class="subtitle">
+        Your payment has been received. Your access to The Media Buying Academy
+        is being prepared and your dashboard details will be sent to your email.
+      </p>
+
+      <div class="reference">
+        Reference: <strong id="referenceText">Processing...</strong>
+      </div>
+
+      <a class="btn" href="index.html">Back to Home</a>
+      <p class="small-note">
+        Need help? Contact support and share your reference.
+      </p>
+    </div>
+
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const ref = params.get("ref") || "N/A";
+      const refEl = document.getElementById("referenceText");
+      if (refEl) refEl.textContent = ref;
+    </script>
+  </body>
+</html>

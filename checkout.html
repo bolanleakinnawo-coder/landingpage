@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Media Buying Academy — Get Instant Access</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --green: #1e8a5a;
+        --green-dark: #146b45;
+        --green-light: #eaf7f0;
+        --amber: #ffc233;
+        --bg: #f6fbf8;
+        --card: #ffffff;
+        --ink: #12251c;
+        --ink-dim: #5c6f65;
+        --line: #dceee3;
+        --radius-m: 14px;
+        --radius-s: 8px;
+        --font-display: "Sora", sans-serif;
+        --font-body: "Inter", -apple-system, sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font-family: var(--font-body);
+        line-height: 1.5;
+        padding: 32px 16px 60px;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .card {
+        max-width: 440px;
+        margin: 0 auto;
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-m);
+        padding: 32px 24px;
+        box-shadow: 0 20px 50px rgba(18, 37, 28, 0.06);
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 22px;
+      }
+      h1 {
+        font-family: var(--font-display);
+        font-weight: 800;
+        font-size: 1.55rem;
+        line-height: 1.25;
+        color: var(--ink);
+      }
+      h1 .accent {
+        color: var(--green);
+        display: block;
+      }
+      .subtitle {
+        color: var(--ink-dim);
+        font-size: 0.92rem;
+        margin-top: 10px;
+        line-height: 1.5;
+      }
+
+      .price-row {
+        text-align: center;
+        margin: 24px 0 6px;
+      }
+      .price-old {
+        font-family: var(--font-display);
+        font-size: 1.1rem;
+        color: var(--ink-dim);
+        text-decoration: line-through;
+        margin-right: 10px;
+      }
+      .price-new {
+        font-family: var(--font-display);
+        font-weight: 800;
+        font-size: 2.4rem;
+        color: var(--ink);
+      }
+      .price-note {
+        text-align: center;
+        font-size: 0.78rem;
+        color: var(--ink-dim);
+        letter-spacing: 0.02em;
+        margin-bottom: 24px;
+      }
+      .price-note .dot {
+        margin: 0 6px;
+      }
+
+      .checklist {
+        border: 1px solid var(--line);
+        border-radius: var(--radius-s);
+        overflow: hidden;
+        margin-bottom: 22px;
+      }
+      .checklist .item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--line);
+        font-size: 0.92rem;
+      }
+      .checklist .item:last-child {
+        border-bottom: none;
+      }
+      .checklist .item .check {
+        color: var(--green);
+        font-weight: 700;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+      .field {
+        width: 100%;
+        padding: 14px 16px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-s);
+        background: var(--green-light);
+        font-family: var(--font-body);
+        font-size: 0.95rem;
+        color: var(--ink);
+        outline: none;
+        transition:
+          border-color 0.15s ease,
+          background 0.15s ease;
+      }
+      .field::placeholder {
+        color: #8aa398;
+      }
+      .field:focus {
+        border-color: var(--green);
+        background: #fff;
+      }
+
+      .btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        background: var(--amber);
+        color: #2a2000;
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: 1.02rem;
+        padding: 16px 20px;
+        border-radius: var(--radius-s);
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+        box-shadow: 0 10px 24px rgba(255, 194, 51, 0.35);
+        transition:
+          transform 0.1s ease,
+          box-shadow 0.15s ease;
+      }
+      .btn:hover {
+        box-shadow: 0 12px 28px rgba(255, 194, 51, 0.45);
+      }
+      .btn:active {
+        transform: scale(0.98);
+      }
+
+      .guarantee {
+        text-align: center;
+        font-size: 0.85rem;
+        color: var(--ink-dim);
+        margin-top: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+      }
+
+      .security-line {
+        text-align: center;
+        font-size: 0.75rem;
+        color: #8aa398;
+        margin-top: 8px;
+      }
+
+      @media (max-width: 420px) {
+        .card {
+          padding: 26px 18px;
+        }
+        h1 {
+          font-size: 1.35rem;
+        }
+        .price-new {
+          font-size: 2rem;
+        }
+      }
+
+      @media (min-width: 600px) {
+        body {
+          padding: 56px 16px;
+        }
+        h1 {
+          font-size: 1.75rem;
+        }
+      }
+
+      :focus-visible {
+        outline: 2px solid var(--green);
+        outline-offset: 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="header">
+        <h1>The Media Buying<span class="accent">Academy</span></h1>
+        <p class="subtitle">
+          A copy-and-paste mentorship programme that teaches you how to run
+          highly profitable Instagram ads, optimize your sales process, and get
+          consistent results with direct support.
+        </p>
+      </div>
+
+      <div class="price-row">
+        <span class="price-old">₦75,000</span>
+        <span class="price-new">₦35,000</span>
+      </div>
+      <p class="price-note">
+        One time <span class="dot">·</span> lifetime access
+        <span class="dot">·</span> free updates
+      </p>
+
+      <div class="checklist">
+        <div class="item">
+          <span class="check">✓</span> 3-month one-on-one mentorship and
+          business guidance
+        </div>
+        <div class="item">
+          <span class="check">✓</span> Instagram ads strategy built for
+          profitable sales
+        </div>
+        <div class="item">
+          <span class="check">✓</span> Bonus: 50 ready-to-use hooks &amp;
+          captions
+        </div>
+        <div class="item">
+          <span class="check">✓</span> Access to the support community and
+          accountability
+        </div>
+        <div class="item">
+          <span class="check">✓</span> Instant access + free updates forever
+        </div>
+      </div>
+
+      <form id="checkoutForm">
+        <input
+          class="field"
+          type="text"
+          name="name"
+          placeholder="Enter your full name"
+          required
+        />
+        <input
+          class="field"
+          type="email"
+          name="email"
+          placeholder="Enter your email address"
+          required
+        />
+        <input
+          class="field"
+          type="tel"
+          name="phone"
+          placeholder="Enter your WhatsApp number"
+          required
+        />
+        <button type="submit" class="btn">Get Instant Access Now →</button>
+      </form>
+
+      <p class="guarantee">🛡️ 7-day money-back guarantee</p>
+      <p class="security-line">
+        🔒 Secure payment via Paystack · instant access after payment
+      </p>
+    </div>
+
+    <script>
+      document
+        .getElementById("checkoutForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          const form = event.currentTarget;
+          const formData = new FormData(form);
+          const name = String(formData.get("name") || "").trim();
+          const email = String(formData.get("email") || "").trim();
+          const phone = String(formData.get("phone") || "").trim();
+
+          if (!name || !email || !phone) {
+            alert("Please fill in all fields before continuing.");
+            return;
+          }
+
+          const params = new URLSearchParams({
+            name,
+            email,
+            phone,
+          });
+
+          window.location.href = `payment.html?${params.toString()}`;
+        });
+    </script>
+  </body>
+</html>
